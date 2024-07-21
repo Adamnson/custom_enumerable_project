@@ -50,6 +50,18 @@ module Enumerable
     end
   end
 
+  def my_count(&block)
+    if block_given?
+      count = 0
+      self.my_each do |e|
+        count += 1 if block.call(e)
+      end
+      count
+    else
+      self.size
+    end
+  end
+
 
 end
 
