@@ -1,5 +1,56 @@
+require 'pry-byebug'
+
 module Enumerable
-  # Your code goes here
+
+  def my_each_with_index
+    if block_given?
+      count = 0
+      self.my_each do |item|
+        yield item, count
+        count += 1
+      end
+    end
+    self.my_each
+  end
+
+  def my_select(&block)
+    if block_given?
+      new_arr = []
+      self.my_each do |item|
+        new_arr << item if block.call(item)
+      end
+      new_arr
+    end
+  end
+
+  def my_all?(&block)
+    if block_given?
+      self.my_each do |e|
+        return false unless block.call(e)
+      end
+      true
+    end
+  end
+
+  def my_any?(&block)
+    if block_given?
+      self.my_each do |e|
+        return true if block.call(e)
+      end
+      false
+    end
+  end
+
+  def my_none?(&block)
+    if block_given?
+      self.my_each do |e|
+        return false if block.call(e)
+      end
+      true
+    end
+  end
+
+
 end
 
 # You will first have to define my_each
@@ -8,4 +59,11 @@ end
 # to this method
 class Array
   # Define my_each here
+  # binding.pry
+  def my_each(&block)
+    for item in self
+      yield item if block_given?
+    end
+    return self unless self.empty?
+  end
 end
