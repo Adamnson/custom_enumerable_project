@@ -61,8 +61,29 @@ module Enumerable
       self.size
     end
   end
+  
+  def my_map(&block)
+    if block_given?
+      new_arr = []
+      self.my_each do |e|
+        new_arr << block.call(e)
+      end
+    end
+    new_arr
+  end
 
-
+  def my_inject(i, &block)
+    unless self.empty?
+      ret_val = i
+      if block_given?
+        self.my_each do |e|
+          ret_val = block.call(ret_val,e)
+        end        
+      end
+      ret_val
+    end
+    
+  end
 end
 
 # You will first have to define my_each
